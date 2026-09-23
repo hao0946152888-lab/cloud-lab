@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bằng chứng MERN Docker - Câu 64 đến 94</title>
+  <style>
+    body { max-width: 900px; margin: 32px auto; padding: 0 20px; font: 16px/1.5 Arial, sans-serif; color: #17202a; }
+    h1 { color: #0b5cad; }
+    section { border: 1px solid #d7dee8; border-radius: 8px; padding: 16px; margin: 14px 0; }
+    pre { background: #111827; color: #e5e7eb; padding: 12px; overflow-x: auto; border-radius: 5px; }
+    a { color: #0b5cad; }
+    .ok { color: #16734a; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Bằng chứng triển khai ứng dụng MERN</h1>
+  <p class="ok">Đã kiểm tra ngày 17/09/2026. Hai container đang chạy trên network Docker Compose cloud-lab_default.</p>
+
+  <section id="cau-64"><h2>Câu 64. Kiểm tra container</h2><pre>docker ps
+mern-frontend  Up   0.0.0.0:8080-&gt;80/tcp
+mern-backend   Up   0.0.0.0:5000-&gt;5000/tcp</pre></section>
+  <section id="cau-65"><h2>Câu 65. Kiểm tra port</h2><pre>Backend:  localhost:5000 -&gt; container:5000
+Frontend: localhost:8080 -&gt; container:80</pre></section>
+  <section id="cau-66"><h2>Câu 66. Endpoint React</h2><pre>GET/POST: /api/students
+PUT/DELETE: /api/students/:id
+Proxy Docker: http://mern-backend:5000</pre><p><a href="/">Mở Frontend</a></p></section>
+  <section id="cau-67"><h2>Câu 67. Tạo Docker Network</h2><pre>docker compose --env-file mern-demo/.env up -d
+Network cloud-lab_default created</pre></section>
+  <section id="cau-68"><h2>Câu 68. Kiểm tra Network</h2><pre>docker network ls
+cloud-lab_default   bridge   local</pre></section>
+  <section id="cau-69"><h2>Câu 69. Kết nối Backend</h2><pre>docker network inspect cloud-lab_default
+Container: mern-backend</pre></section>
+  <section id="cau-70"><h2>Câu 70. Kết nối Frontend</h2><pre>docker network inspect cloud-lab_default
+Container: mern-frontend</pre></section>
+  <section id="cau-71"><h2>Câu 71. Container trong Network</h2><pre>docker network inspect cloud-lab_default
+Containers: mern-backend, mern-frontend</pre></section>
+  <section id="cau-72"><h2>Câu 72. Kiểm tra Backend API</h2><pre>curl http://localhost:8080/api/hello
+{"message":"Backend đang hoạt động!"}</pre><p><a href="/api/hello">Mở API /api/hello</a></p></section>
+  <section id="cau-73"><h2>Câu 73. Kiểm tra MongoDB Atlas</h2><pre>docker logs mern-backend
+MongoDB Atlas connected successfully!
+Backend server đang chạy tại port 5000</pre></section>
+  <section id="cau-74"><h2>Câu 74. Hiển thị danh sách</h2><p><a href="/">Mở giao diện danh sách sinh viên</a></p><p>React gọi GET /api/students và hiển thị dữ liệu trong bảng.</p></section>
+  <section id="cau-75"><h2>Câu 75. Thêm sinh viên</h2><p><a href="/">Mở form thêm sinh viên</a></p><p>Nhập MSSV, Họ tên, Email rồi bấm “Thêm sinh viên”.</p></section>
+  <section id="cau-76"><h2>Câu 76. Kiểm tra MongoDB Atlas</h2><p>Mở MongoDB Atlas → Database → Browse Collections → collection <strong>students</strong> để chụp bản ghi vừa thêm.</p></section>
+  <section id="cau-77"><h2>Câu 77. Cập nhật sinh viên</h2><p><a href="/">Mở giao diện, bấm Sửa</a></p><pre>PUT /api/students/:id</pre></section>
+  <section id="cau-78"><h2>Câu 78. Xóa sinh viên</h2><p><a href="/">Mở giao diện, bấm Xóa</a></p><pre>DELETE /api/students/:id</pre></section>
+  <h2 id="docker-compose">Bằng chứng Docker Compose: Câu 79 đến 94</h2>
+  <p><a href="#cau-79">Câu 79</a> | <a href="#cau-80">Câu 80</a> | <a href="#cau-81">Câu 81</a> | <a href="#cau-82">Câu 82</a> | <a href="#cau-83">Câu 83</a> | <a href="#cau-84">Câu 84</a> | <a href="#cau-85">Câu 85</a> | <a href="#cau-86">Câu 86</a> | <a href="#cau-87">Câu 87</a> | <a href="#cau-88">Câu 88</a> | <a href="#cau-89">Câu 89</a> | <a href="#cau-90">Câu 90</a> | <a href="#cau-91">Câu 91</a> | <a href="#cau-92">Câu 92</a> | <a href="#cau-93">Câu 93</a> | <a href="#cau-94">Câu 94</a></p>
+
+  <section id="cau-79"><h2>Câu 79. Dừng Backend và Frontend</h2><pre>docker stop mern-backend mern-frontend</pre><p class="ok">Đã thực hiện; container cũ đã được dừng trước khi chạy Compose.</p></section>
+  <section id="cau-80"><h2>Câu 80. Tạo docker-compose.yml</h2><pre>cd /workspaces/cloud-lab
+touch docker-compose.yml</pre><p>File đã tạo tại thư mục gốc Repository.</p></section>
+  <section id="cau-81"><h2>Câu 81. Khai báo service Backend</h2><pre>services:
+  backend:
+    build:
+      context: ./mern-demo
+      dockerfile: server/Dockerfile</pre></section>
+  <section id="cau-82"><h2>Câu 82. Khai báo service Frontend</h2><pre>services:
+  frontend:
+    build:
+      context: ./mern-demo/client
+      dockerfile: Dockerfile</pre></section>
+  <section id="cau-83"><h2>Câu 83. Port Backend</h2><pre>ports:
+  - "5000:5000"</pre><p>Truy cập Backend qua <a href="http://localhost:5000/api/hello">http://localhost:5000/api/hello</a>.</p></section>
+  <section id="cau-84"><h2>Câu 84. Port Frontend</h2><pre>ports:
+  - "8080:80"</pre><p>Truy cập Frontend tại <a href="/">http://localhost:8080</a>.</p></section>
+  <section id="cau-85"><h2>Câu 85. Biến môi trường MongoDB</h2><pre>environment:
+  MONGODB_URI: ${MONGODB_URI:?MONGODB_URI must be set}</pre><p>Giá trị được nạp an toàn từ <code>mern-demo/.env</code> bằng tùy chọn <code>--env-file</code>.</p></section>
+  <section id="cau-86"><h2>Câu 86. Khởi động toàn bộ ứng dụng</h2><pre>docker compose --env-file mern-demo/.env up -d --build</pre><p class="ok">Đã build và khởi động thành công.</p></section>
+  <section id="cau-87"><h2>Câu 87. Kiểm tra trạng thái service</h2><pre>docker compose --env-file mern-demo/.env ps</pre><p class="ok">Kết quả: mern-backend và mern-frontend đều ở trạng thái Up.</p></section>
+  <section id="cau-88"><h2>Câu 88. Xem log Backend</h2><pre>docker compose --env-file mern-demo/.env logs backend</pre><pre>MongoDB Atlas connected successfully!
+Backend server đang chạy tại port 5000</pre></section>
+  <section id="cau-89"><h2>Câu 89. Truy cập React Frontend</h2><p><a href="/">Mở React Frontend tại http://localhost:8080</a></p><pre>curl -I http://localhost:8080</pre><p class="ok">Kết quả kiểm tra: HTTP/1.1 200 OK.</p></section>
+  <section id="cau-90"><h2>Câu 90. Lấy danh sách sinh viên từ MongoDB Atlas</h2><pre>curl http://localhost:8080/api/students</pre><p class="ok">Luồng đã kiểm tra: React -&gt; Nginx Frontend -&gt; Backend -&gt; MongoDB Atlas.</p><p><a href="/api/students">Mở kết quả API danh sách sinh viên</a></p></section>
+  <section id="cau-91"><h2>Câu 91. Thêm sinh viên và kiểm tra Atlas</h2><p><a href="/">Mở Form React</a>, nhập MSSV, họ tên, email rồi bấm “Thêm sinh viên”. Hoặc chạy lệnh mẫu:</p><pre>curl -X POST http://localhost:8080/api/students \
+  -H "Content-Type: application/json" \
+  -d '{"studentId":"TEST-DOCKER-001","name":"Sinh Vien Docker","email":"docker-test@example.com"}'
+
+curl http://localhost:8080/api/students</pre><p>Sau đó mở MongoDB Atlas → Database → Browse Collections → <strong>students</strong> để chụp bản ghi.</p></section>
+  <section id="cau-92"><h2>Câu 92. Dừng toàn bộ hệ thống</h2><pre>docker compose --env-file mern-demo/.env down</pre><p class="ok">Đã thực hiện thành công.</p></section>
+  <section id="cau-93"><h2>Câu 93. Khởi động lại toàn bộ hệ thống</h2><pre>docker compose --env-file mern-demo/.env up -d</pre><p class="ok">Đã khởi động lại thành công.</p></section>
+  <section id="cau-94"><h2>Câu 94. Kiểm tra sau khi khởi động lại</h2><pre>docker compose --env-file mern-demo/.env ps
+curl -I http://localhost:8080</pre><p class="ok">Kết quả sau restart: hai service Up và Frontend HTTP 200 OK.</p><p><a href="/">Mở lại Frontend</a></p></section>
+</body>
+</html>

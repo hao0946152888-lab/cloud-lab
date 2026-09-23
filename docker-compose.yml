@@ -1,0 +1,29 @@
+services:
+  backend:
+    container_name: mern-backend
+    restart: unless-stopped
+    build:
+      context: ./mern-demo
+      dockerfile: server/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      MONGODB_URI: ${MONGODB_URI:?MONGODB_URI must be set}
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://localhost:5000/api/hello', response => process.exit(response.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))\""]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
+  frontend:
+    container_name: mern-frontend
+    restart: unless-stopped
+    build:
+      context: ./mern-demo/client
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
