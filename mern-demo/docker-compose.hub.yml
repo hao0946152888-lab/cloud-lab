@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  # Đổi tên service thành mern-backend để khớp với Nginx upstream
+  mern-backend:
+    image: t123hao/mern-backend:1.0
+    container_name: mern-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGODB_URI=${MONGODB_URI:?Set MONGODB_URI before starting the Hub stack}
+    restart: always
+
+  frontend:
+    image: t123hao/mern-frontend:1.0
+    container_name: mern-frontend-hub
+    ports:
+      - "80:80"
+    depends_on:
+      - mern-backend
+    restart: always
